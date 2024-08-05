@@ -3,14 +3,18 @@ from flask import Flask, request, render_template
 import pandas as pd
 import numpy as np
 from sklearn.linear_model import LinearRegression
+import os
 
 app = Flask(__name__)
+
 # Load the model
-with open(r'C:\Users\owner\Desktop\ML\price_prediction_model (2).pkl', 'rb') as file:
+model_path = os.path.join(os.path.dirname(__file__), 'price_prediction_model (2).pkl')
+with open(model_path, 'rb') as file:
     model = pickle.load(file)
 
 # Load the dataset
-train = pd.read_csv(r'C:\Users\owner\Desktop\ML\test_data - Flipkart_Mobiles.csv')
+csv_path = os.path.join(os.path.dirname(__file__), 'test_data - Flipkart_Mobiles.csv')
+train = pd.read_csv(csv_path)
 train['Date'] = pd.to_datetime(train['Date'], format="%d %b %Y")
 train = train.sort_values(by='Date').reset_index(drop=True)
 train = train.set_index("Date")
